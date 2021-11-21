@@ -29,10 +29,9 @@ exports.createVehicle = async (req, res) => {
             modelo: inf.modelo,
             puertas: inf.puertas,
             tipo: inf.tipo,
-            person: inf.person
 
         })
-
+/* 
         const Person = new HistoryPersons({
             id: inf.id,
             nombres: inf.person.nombres,
@@ -42,11 +41,11 @@ exports.createVehicle = async (req, res) => {
             profesion_oficio: inf.person.profesion_oficio,
             casado: inf.person.casado,
             ingresos_mensuales: inf.person.ingresos_mensuales,
-        });
+        }); */
 
 
 
-        const resultadoHistory = await Person.save();
+        /* const resultadoHistory = await Person.save(); */
         const resultado = await vehicle.save()
 
         console.log(resultadoHistory);
