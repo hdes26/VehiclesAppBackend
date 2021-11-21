@@ -23,7 +23,6 @@ exports.createPerson = async (req, res) => {
 
     try {
         const inf = req.body;
-        console.log(inf.vehiculo.placa);
         const person = new PersonsAppModel({
             id: inf.id,
             nombres: inf.nombres,
@@ -33,24 +32,23 @@ exports.createPerson = async (req, res) => {
             profesion_oficio: inf.profesion_oficio,
             casado: inf.casado,
             ingresos_mensuales: inf.ingresos_mensuales,
-            vehiculo: inf.vehiculo,
 
 
         })
-        const Vehicle = new HistoryVehicles({
+ /*        const Vehicle = new HistoryVehicles({
             id: inf.vehiculo.id,
             placa: inf.vehiculo.placa,
             marca: inf.vehiculo.marca,
             modelo: inf.vehiculo.modelo,
             puertas: inf.vehiculo.puertas,
             tipo: inf.vehiculo.tipo,
-        });
+        }); */
 
 
-        const resultadoHistory = await Vehicle.save();
+        /* const resultadoHistory = await Vehicle.save(); */
         const resultado = await person.save();
 
-        console.log(resultadoHistory)
+        /* console.log(resultadoHistory) */
         console.log(resultado);
 
 
