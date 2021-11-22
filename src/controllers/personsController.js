@@ -63,17 +63,17 @@ exports.upgradePerson = async (req, res) => {
     try {
 
         let { id } = req.params
-        const inf = req.body.person;
+        const inf = req.body;
         const person = await PersonsAppModel.updateOne({ _id: id },
             {
                 $set: {
                     nombres: inf.nombres,
+                    apellidos:inf.apellidos,
                     fecha_nacimiento: inf.fecha_nacimiento,
                     identificacion: inf.identificacion,
                     profesion_oficio: inf.profesion_oficio,
                     casado: inf.casado,
                     ingresos_mensuales: inf.ingresos_mensuales,
-                    vehiculo: inf.vehiculo,
 
                 }
             })
