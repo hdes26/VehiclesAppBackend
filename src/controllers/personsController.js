@@ -10,12 +10,12 @@ exports.allPerson = async (req, res) => {
     try {
         const PersonsApp = await PersonsAppModel.find();
         console.log(PersonsApp)
-        res.json({
+       res.status(200).json({
             PersonsApp
         });
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error);
     }
 }
 //Crea una nueva persona
@@ -35,27 +35,15 @@ exports.createPerson = async (req, res) => {
 
 
         })
- /*        const Vehicle = new HistoryVehicles({
-            id: inf.vehiculo.id,
-            placa: inf.vehiculo.placa,
-            marca: inf.vehiculo.marca,
-            modelo: inf.vehiculo.modelo,
-            puertas: inf.vehiculo.puertas,
-            tipo: inf.vehiculo.tipo,
-        }); */
-
-
-        /* const resultadoHistory = await Vehicle.save(); */
+ 
         const resultado = await person.save();
-
-        /* console.log(resultadoHistory) */
         console.log(resultado);
 
 
-        res.json('Persona creado');
+        res.status(200).json('Persona creado');
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error);
     }
 }
 //Actualiza la informacion de una persona ya creada
@@ -78,10 +66,10 @@ exports.upgradePerson = async (req, res) => {
                 }
             })
 
-        res.json('Persona actualizada');
+            res.status(200).json('Persona actualizada');
 
     } catch (error) {
-        console.log(error)
+        res.status(400).json(error);
     }
 }
 //Elimina una persona
@@ -90,10 +78,10 @@ exports.deletePerson = async (req, res) => {
         let { id } = req.params;
         const persona = await PersonsAppModel.deleteOne({ _id: id });
         console.log(persona);
-        res.json('Usuario eliminado')
+        res.status(200).json('Usuario eliminado');
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error);
     }
 }
 
@@ -124,9 +112,10 @@ exports.upgradeHistorialPerson = async (req, res) => {
             const resultadoHistory = await Vehicle.save();
             console.log(resultadoHistory);
 
-        res.json('Persona actualizada');
+            res.status(200).json('Persona actualizada');
 
     } catch (error) {
-        console.log(error)
+        res.status(400).json(error);
     }
 }
+

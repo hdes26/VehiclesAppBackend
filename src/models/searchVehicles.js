@@ -9,7 +9,8 @@ const Vehicles ={
     marca:String,
     modelo:String,
     puertas:Number,
-    tipo:String
+    tipo:String,
+    disponible:Boolean
 };
 
 const VehiclesAppModel = connectMongo('vehiclesapp' , Vehicles);

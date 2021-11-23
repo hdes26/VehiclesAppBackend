@@ -1,5 +1,4 @@
 
-const HistoryPersons = require("../models/HistoryPerson");
 const VehiclesAppModel = require("../models/searchVehicles");
 
 
@@ -8,12 +7,12 @@ exports.allVehicles = async (req, res) => {
     try {
         const VehiclesApp = await VehiclesAppModel.find();
         console.log(VehiclesApp);
-        res.json({
+        res.status(200).json({
             VehiclesApp
         });
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error)
     }
 }
 
@@ -29,36 +28,22 @@ exports.createVehicle = async (req, res) => {
             modelo: inf.modelo,
             puertas: inf.puertas,
             tipo: inf.tipo,
+            disponible: inf.disponible
 
         })
-/* 
-        const Person = new HistoryPersons({
-            id: inf.id,
-            nombres: inf.person.nombres,
-            apellidos:inf.person.apellidos,
-            fecha_nacimiento:inf.person.fecha_nacimiento,
-            identificacion: inf.person.identificacion,
-            profesion_oficio: inf.person.profesion_oficio,
-            casado: inf.person.casado,
-            ingresos_mensuales: inf.person.ingresos_mensuales,
-        }); */
 
-
-
-        /* const resultadoHistory = await Person.save(); */
         const resultado = await vehicle.save()
 
-        console.log(resultadoHistory);
         console.log(resultado);
 
-        res.json('Vehiculo creado');
+        res.status(200).json('Vehiculo creado');
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error);
     }
 
 }
-//Actualiza la informacion de una persona ya creada
+//Actualiza la informacion de una vehiculo ya creada
 exports.upgradoVehicle = async (req, res) => {
 
     try {
@@ -73,12 +58,13 @@ exports.upgradoVehicle = async (req, res) => {
                     modelo: inf.modelo,
                     puertas: inf.puertas,
                     tipo: inf.tipo,
+                    disponible: inf.disponible
 
                 }
             })
-        res.json('Vehiculo actualizado');
+        res.status(200).json('Vehiculo actualizado');
     } catch (error) {
-        console.log(error)
+        res.status(400).json(error);
     }
 
 }
@@ -89,48 +75,61 @@ exports.deleteVehicle = async (req, res) => {
         let { id } = req.params;
         const vehicle = await VehiclesAppModel.deleteOne({ _id: id });
         console.log(vehicle);
-        res.json('Usuario eliminado')
+        res.status(200).json('Usuario eliminado');
 
     } catch (error) {
-        res.json(error)
+        res.status(400).json(error);
+
     }
 
 }
 
-//Actualizar dueño de un vehiculo
-exports.upgradeHistorialVehicle = async (req, res) => {
+//Historial vehiculos disponibles
+exports.availableVehicle = async (req, res) => {
     try {
 
-        let { id } = req.params
-        const inf = req.body;
-        const person = await VehiclesAppModel.updateOne({ _id: id },
+        const avaiblevehicle = await VehiclesAppModel.find({ disponible: true })
+
+
+
+        res.status(200).json(avaiblevehicle);
+
+
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
+
+exports.assignVehicle = async (req, res) => {
+
+    const data = req.body;
+
+    try {
+
+
+        const assyngthevehicle = await VehiclesAppModel.updateOne({ _id: id },
             {
                 $set: {
-                    person: inf.person,
+                    placa: inf.placa,
+                    marca: inf.marca,
+                    modelo: inf.modelo,
+                    puertas: inf.puertas,
+                    tipo: inf.tipo,
+                    disponible: inf.disponible
 
                 }
             })
 
-        const Person = new HistoryPersons({
-            id: inf.id,
-            nombres: inf.person.nombres,
-            apellidos:inf.person.apellidos,
-            fecha_nacimiento:inf.person.fecha_nacimiento,
-            identificacion: inf.person.identificacion,
-            profesion_oficio: inf.person.profesion_oficio,
-            casado: inf.person.casado,
-            ingresos_mensuales: inf.person.ingresos_mensuales,
-            vehiculo: inf.person.vehiculo,
-        });
 
 
-
-        const resultadoHistory = await Person.save();
-        console.log(resultadoHistory);
-
-        res.json('Persona actualizada');
+        res.status(200).json("OHSHET");
 
     } catch (error) {
-        console.log(error)
+
+        res.status(400).json(error);
     }
+
+
 }
+

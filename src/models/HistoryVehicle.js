@@ -11,6 +11,7 @@ const Vehicles ={
     modelo:String,
     puertas:Number,
     tipo:String,
+    disponible:Boolean
 };
 
 
