@@ -3,8 +3,8 @@ const connectMongo = require('../helpers/connectMongo');
 
 
 
-const Persons= {
-    id:Number,
+const Persons = {
+    id: Number,
     nombres: String,
     apellidos: String,
     fecha_nacimiento: String,
@@ -19,4 +19,4 @@ const Persons= {
 const PersonsAppModel = connectMongo('personsapp', Persons);
 
 
-module.exports =   PersonsAppModel;
+module.exports = PersonsAppModel;

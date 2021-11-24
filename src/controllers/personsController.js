@@ -1,5 +1,6 @@
-const HistoryVehicles = require("../models/HistoryVehicle");
-const PersonsAppModel = require("../models/searchPerson");
+const HistoryVehicles = require("../models/historyModel");
+const PersonsModel = require("../models/personModel");
+const VehicleModel = require("../models/vehiclesModel");
 
 
 
@@ -8,13 +9,25 @@ const PersonsAppModel = require("../models/searchPerson");
 //Devuelve todas las personas
 exports.allPerson = async (req, res) => {
     try {
-        const PersonsApp = await PersonsAppModel.find();
-        console.log(PersonsApp)
-       res.status(200).json({
-            PersonsApp
-        });
+        const PersonsApp = await PersonsModel.find();
+        console.log(PersonsApp.length)
+        for (let i = 0; i < PersonsApp.length; i++) {
+            console.log("hola")
+            if (PersonsApp[i].vehiculo != null) {
+                const vehiclePerson = await VehicleModel.populate(PersonsApp[0], { path: 'vehiculo' });
+                PersonsApp[i] = vehiclePerson;
+            }
+            if (i == PersonsApp.length - 1) {
+                console.log(PersonsApp)
+                res.status(200).json({
+                    PersonsApp
+                });
+            }
+        }
+
 
     } catch (error) {
+        console.log(error);
         res.status(400).json(error);
     }
 }
@@ -23,19 +36,19 @@ exports.createPerson = async (req, res) => {
 
     try {
         const inf = req.body;
-        const person = new PersonsAppModel({
+        const person = new PersonsModel({
             id: inf.id,
             nombres: inf.nombres,
-            apellidos:inf.apellidos,
+            apellidos: inf.apellidos,
             fecha_nacimiento: inf.fecha_nacimiento,
             identificacion: inf.identificacion,
             profesion_oficio: inf.profesion_oficio,
             casado: inf.casado,
             ingresos_mensuales: inf.ingresos_mensuales,
-
+            vehiculo: null
 
         })
- 
+
         const resultado = await person.save();
         console.log(resultado);
 
@@ -52,11 +65,11 @@ exports.upgradePerson = async (req, res) => {
 
         let { id } = req.params
         const inf = req.body;
-        const person = await PersonsAppModel.updateOne({ _id: id },
+        const person = await PersonsModel.updateOne({ _id: id },
             {
                 $set: {
                     nombres: inf.nombres,
-                    apellidos:inf.apellidos,
+                    apellidos: inf.apellidos,
                     fecha_nacimiento: inf.fecha_nacimiento,
                     identificacion: inf.identificacion,
                     profesion_oficio: inf.profesion_oficio,
@@ -66,7 +79,7 @@ exports.upgradePerson = async (req, res) => {
                 }
             })
 
-            res.status(200).json('Persona actualizada');
+        res.status(200).json('Persona actualizada');
 
     } catch (error) {
         res.status(400).json(error);
@@ -76,7 +89,7 @@ exports.upgradePerson = async (req, res) => {
 exports.deletePerson = async (req, res) => {
     try {
         let { id } = req.params;
-        const persona = await PersonsAppModel.deleteOne({ _id: id });
+        const persona = await PersonsModel.deleteOne({ _id: id });
         console.log(persona);
         res.status(200).json('Usuario eliminado');
 
@@ -85,37 +98,19 @@ exports.deletePerson = async (req, res) => {
     }
 }
 
-//Actualizar vehiculo de una persona
-exports.upgradeHistorialPerson = async (req, res) => {
+
+
+//Personas disponibles
+
+exports.avaiblePerson = async (req, res) => {
     try {
 
-        let { id } = req.params
-        const inf = req.body;
-        const vehicle = await PersonsAppModel.updateOne({ _id: id },
-            {
-                $set: {
-                    vehiculo: inf.vehiculo,
+        const avaiblepersonn = await PersonsModel.find({ vehiculo: null })
 
-                }
-            })
+        res.status(200).json(avaiblepersonn);
 
-            const Vehicle = new HistoryVehicles({
-                id: inf.id,
-                placa: inf.vehiculo.placa,
-                marca: inf.vehiculo.marca,
-                modelo: inf.vehiculo.modelo,
-                puertas: inf.vehiculo.puertas,
-                tipo: inf.vehiculo.tipo,
-            });
-    
-    
-            const resultadoHistory = await Vehicle.save();
-            console.log(resultadoHistory);
-
-            res.status(200).json('Persona actualizada');
 
     } catch (error) {
         res.status(400).json(error);
     }
 }
-
